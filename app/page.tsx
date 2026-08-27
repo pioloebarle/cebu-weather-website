@@ -2,6 +2,7 @@ import Header  from "@/components/layout/Header";
 import SearchBar from "@/components/layout/SearchBar";
 import GridCard from "@/components/layout/GridCard";
 import { getAllCitiesWeather } from "@/lib/get-all-cities-weather";
+export const dynamic = "force-dynamic";
 export default async function Home() {
   const cities = await getAllCitiesWeather();
   return (
