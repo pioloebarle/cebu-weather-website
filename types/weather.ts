@@ -54,6 +54,7 @@ export interface CityWeatherData {
   current: CurrentWeather;
   hourly: HourlyForecast[];   // next 24
   daily: DailyForecast[];     // next 7
+  lastFetched: Date | null;
   advisory: {
     active: boolean;
     riskLevel: "low" | "moderate" | "high" | "severe" | null;

@@ -3,7 +3,12 @@ import { fetchCurrentWeather, fetchHourlyForecast, fetchDailyForecast } from "@/
 import { CityWeatherData, CurrentWeather } from "@/types/weather";
 
 export async function getAllCitiesWeather() : Promise<CityWeatherData[]>{
-    const cities = await prisma.city.findMany();
+    const cities = await prisma.city.findMany({
+        orderBy: [
+            { region: "asc" },
+            { id: "asc" }
+        ],
+    });
 
     const results = await Promise.all(cities.map(async (city) => {
         // const current = await fetchCurrentWeather(city.lat, city.lon);
@@ -17,7 +22,8 @@ export async function getAllCitiesWeather() : Promise<CityWeatherData[]>{
             lon: city.lon,
             current: city.weatherData as unknown as CurrentWeather,
             hourly: [], 
-            daily: [],   
+            daily: [], 
+            lastFetched: city.lastFetched,  
             advisory: { active: false, riskLevel: null, summary: null },
         };
     }));
@@ -40,6 +46,7 @@ export async function getCityWeather(slug: string) : Promise<CityWeatherData | n
         current: city.weatherData as unknown as CurrentWeather,
         hourly: [], 
         daily: [],   
+        lastFetched: city.lastFetched,
         advisory: { active: false, riskLevel: null, summary: null },
     }
 }

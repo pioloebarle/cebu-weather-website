@@ -1,6 +1,12 @@
-import { getAllCitiesWeather } from "@/lib/get-all-cities-weather";
-export default async function Header() {
-    const cities = await getAllCitiesWeather();
+import { CityWeatherData } from "@/types/weather";
+
+export default function Header({ cities }: { cities: CityWeatherData[] }) {
+    const mostRecentUpdate = cities.reduce((latest, city) => {
+        if (!city.lastFetched) return latest;
+        if (!latest || city.lastFetched > latest) return city.lastFetched;
+        return latest;
+    }, null as Date | null);
+
     return (
         <div className="mb-10">
             <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -14,28 +20,40 @@ export default async function Header() {
                     <p className="text-sm text-[#a8afc8]/70 mt-2 mb-0">
                         Real-time conditions · {cities.length} cities & municipalities
                     </p>
-
                     {/* Timestamp */}
-                    {/* <div className="flex mt-4 items-center gap-[6px]">
-                        <div className="h-1.5 w-1.5 rounded-full bg-[#4ade80]" />
-                        <span className="text-[12px] text-[#a8afc8]/60">Updated August 26, 2026 · 12:47 PM PHT</span>
-                    </div> */}
+                    <div className="flex mt-2 items-center gap-[6px]">
+                        <div className="h-1.5 w-1.5 rounded-full bg-green-500/50" />
+                        <span className="text-[12px] text-[#a8afc8]/60 text-green-500/50">
+                            Updated {formatTimeStamp(mostRecentUpdate)}
+                        </span>
+                    </div>
                 </div>
 
-                {/* Active advisories badge */}
                 <div className="flex shrink-0 items-center gap-[10px] rounded-[14px] border border-red-500/30 bg-red-500/12 px-[18px] py-[12px]">
-                    <div className="h-2 w-2 animate-pulse rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" />
                     <div>
                         <div className="text-[12px] font-semibold tracking-[0.06em] text-red-500">
-                        ACTIVE ADVISORIES
+                            ACTIVE ADVISORIES
                         </div>
                         <div className="text-[11px] text-red-500/70">
                             11 areas affected
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-    )
+    );
+}
+
+function formatTimeStamp(date: Date | null): string {
+    if (!date) return "Not yet updated";
+
+    return new Date(date).toLocaleString("en-US", {
+        timeZone: "Asia/Manila",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+    }) + " PHT";
 }
