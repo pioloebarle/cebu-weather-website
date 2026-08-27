@@ -1,5 +1,6 @@
 import CityHeader from "@/components/city-detail/Header";
 import { getCityWeather } from "@/lib/get-all-cities-weather";
+export const dynamic = "force-dynamic";
 
 export default async function CityPage( { params, }: {
     params: Promise<{ slug: string }>;
