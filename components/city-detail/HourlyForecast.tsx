@@ -1,28 +1,36 @@
 import { CityWeatherData } from "@/types/weather";
+import { useState } from "react";
 
 export default function HourlyForecast({ city }: { city: CityWeatherData }) {
+
+    const [secondsToday] = useState(() => Math.floor(Date.now() / 1000));
+    const currentHour = city.hourly.findIndex((hour, i) => {
+        const nextHour = city.hourly[i + 1];
+        return hour.dt <= secondsToday && (!nextHour || nextHour.dt > secondsToday);
+    });
     return (
         <div className="bg-white/[0.04] border border-white/[0.07] rounded-[20px] pt-5 pb-5 pl-6 pr-0 mb-5 overflow-x-auto">
             <div className="text-xs font-semibold tracking-[0.12em] uppercase text-[#a8afc8]/50 mb-3 pr-6">
-                Next 20 Hours (Debug: {city.hourly.length} entries)
+                Next 20 Hours
             </div>
             <div className="flex gap-1 pr-6">
                 {city.hourly.map((hour, index) => (
                     <div key={index} className={`flex-none min-w-[70px] py-3 rounded-xl text-center border
-                        ${index === 0 ? 'bg-indigo-500/20 border-indigo-500/30' : 'bg-transparent border-transparent'} 
+                        ${index === currentHour ? 'bg-indigo-500/20 border-indigo-500/30' : 'bg-transparent border-transparent'} 
                     `}>
                         <div className={`text-xs mb-2 tracking-[0.04em]
-                            ${index === 0 ? 'text-[#7c9ef8] font-semibold' : 'text-[#a8afc8]/45 font-normal'}
+                            ${index === currentHour ? 'text-[#7c9ef8] font-semibold' : 'text-[#a8afc8]/45 font-normal'}
                         `}>
                             {formatHour(hour.dt)}
                         </div>
-                        <div className="text-base mb-2">
+                        <div className="text-base mb-2 justify-center flex">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src={`https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`}
                                 alt={hour.weather[0].description}
                                 width={50}
                                 height={50}
+                
                             />
                         </div>
                         <div className="font-display text-base text-[#e8eaf2] tracking-[-0.02em] mb-1">
