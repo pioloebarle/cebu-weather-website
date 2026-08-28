@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { fetchCurrentWeather, fetchHourlyForecast, fetchDailyForecast } from "@/lib/openweather";
-import { CityWeatherData, CurrentWeather } from "@/types/weather";
+import { CityWeatherData, CurrentWeather, DailyForecast, HourlyForecast } from "@/types/weather";
 
 export async function getAllCitiesWeather() : Promise<CityWeatherData[]>{
     const cities = await prisma.city.findMany({
@@ -44,8 +44,8 @@ export async function getCityWeather(slug: string) : Promise<CityWeatherData | n
         lat: city.lat,
         lon: city.lon,
         current: city.weatherData as unknown as CurrentWeather,
-        hourly: [], 
-        daily: [],   
+        hourly: (city.hourlyData as unknown as HourlyForecast[]) ?? [], 
+        daily: (city.dailyData as unknown as DailyForecast[]) ?? [],   
         lastFetched: city.lastFetched,
         advisory: { active: false, riskLevel: null, summary: null },
     }
