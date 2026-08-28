@@ -2,7 +2,7 @@ import CityHeader from "@/components/city-detail/Header";
 import CurrentConditions from "@/components/city-detail/CurrentConditions";
 import HourlyForecast from "@/components/city-detail/HourlyForecast";
 import SevenDayForecast from "@/components/city-detail/SevenDayForecast";
-import { getCityWeather } from "@/lib/get-all-cities-weather";
+import { getAllCitiesWeather, getCityWeather } from "@/lib/get-all-cities-weather";
 export const dynamic = "force-dynamic";
 
 export default async function CityPage( { params, }: {
@@ -10,6 +10,7 @@ export default async function CityPage( { params, }: {
 }){
     const { slug } = await params;
     const city = await getCityWeather(slug);
+    const cities = await getAllCitiesWeather();
     if (!city) {
         return (
             <div>
@@ -25,7 +26,7 @@ export default async function CityPage( { params, }: {
                 <CityHeader city={city} />   
                 <CurrentConditions city={city} />
                 <HourlyForecast city={city} />     
-                <SevenDayForecast city={city} />
+                <SevenDayForecast city={city} cities={cities}/>
             </div>
         </div>
     )
