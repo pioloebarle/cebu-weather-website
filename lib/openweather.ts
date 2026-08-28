@@ -41,5 +41,5 @@ export async function fetchDailyForecast(lat: number, lon: number): Promise<Dail
   }
 
   const data = await response.json();
-  return data.data; //change accordingly
+  return data.data.slice(0, 7); //change accordingly
 }

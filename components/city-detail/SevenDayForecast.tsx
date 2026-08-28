@@ -3,7 +3,13 @@ import { CityWeatherData } from "@/types/weather";
 import { useState } from "react";
 
 export default function SevenDayForecast({ city }: { city: CityWeatherData }){
-    const [selectedDay, setSelectedDay] = useState(0);
+    const [ todayInSeconds ] = useState(() => Math.floor(Date.now() / 1000));
+    const todayIndex = city.daily.findIndex((day) => {
+    const dayDate = new Date(day.dt * 1000).toDateString();
+    const nowDate = new Date(todayInSeconds * 1000).toDateString();
+    return dayDate === nowDate;
+    });
+    const [selectedDay, setSelectedDay] = useState(todayIndex >= 0 ? todayIndex : 0);
 
     return(
         <div>
@@ -23,7 +29,7 @@ export default function SevenDayForecast({ city }: { city: CityWeatherData }){
                             `}
                         >
                             <div className={`text-sm ${selectedDay === index ?  'font-semibold text-[#7c9ef8]' : 'font-normal text-[#e8eaf2]' }`}>
-                                {formatDayName(d.dt)};
+                                {formatDayName(d.dt)}
                             </div>
                             <div className="text-base">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}{/* eslint-disable-next-line @next/next/no-img-element */}
@@ -52,7 +58,7 @@ export default function SevenDayForecast({ city }: { city: CityWeatherData }){
                 {/* Selected Day */}
                 <div className="bg-gradient-to-br from-sky-400/[0.07] to-indigo-500/[0.05] border border-indigo-500/14 rounded-2xl padding p-5">
                     <div className="text-xs font-semibold tracking-[0.12em] uppercase text-[#a8afc8]/45 mb-3">
-                        {formatDayName(city.daily[selectedDay].dt)};
+                        {formatDayName(city.daily[selectedDay].dt)}
                     </div>
                     <div className="flex items-center gap-3.5">
                         <span className="text-4xl">
