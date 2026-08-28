@@ -23,22 +23,56 @@ export interface CurrentWeather {
 export interface HourlyForecast {
   dt: number;
   temp: number;
-  pop: number;               // probability of precipitation (0-1)
+  feels_like: number;
+  pressure: number;
+  humidity: number;
+  dew_point: number;
+  uvi: number;
+  clouds: number;
+  visibility: number;
+  wind_speed: number;
+  wind_deg: number;
+  wind_gust: number;
   weather: {
+    id: number;
     main: string;
     description: string;
     icon: string;
   }[];
+  pop: number;
 }
 
 export interface DailyForecast {
   dt: number;
+  sunrise: number;
+  sunset: number;
+  moonrise: number;
+  moonset: number;
+  moon_phase: number;
   temp: {
+    day: number;
     min: number;
     max: number;
+    night: number;
+    eve: number;
+    morn: number;
   };
-  summary: string;            // human-readable daily summary (One Call 3.0 feature)
+  feels_like: {
+    day: number;
+    night: number;
+    eve: number;
+    morn: number;
+  };
+  pressure: number;
+  humidity: number;
+  wind_speed: number;
+  wind_deg: number;
+  clouds: number;
+  pop: number;
+  rain?: number;        // optional — only present on days with actual rain
+  uvi: number;
   weather: {
+    id: number;
     main: string;
     description: string;
     icon: string;

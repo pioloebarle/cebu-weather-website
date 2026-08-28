@@ -1,6 +1,6 @@
 import { Prisma } from "../app/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
-import { fetchCurrentWeather, fetchHourlyForecast } from "@/lib/openweather";
+import { fetchCurrentWeather, fetchHourlyForecast, fetchDailyForecast } from "@/lib/openweather";
 
 interface RefreshResult {
   city: string;
@@ -14,15 +14,17 @@ export async function refreshAllCitiesWeather() {
 
   for (const city of cities) {
     try {
-      const [current, hourly] = await Promise.all([
+      const [current, hourly, daily] = await Promise.all([
         fetchCurrentWeather(city.lat, city.lon),
         fetchHourlyForecast(city.lat, city.lon),
+        fetchDailyForecast(city.lat, city.lon),
       ])
       await prisma.city.update({
         where: { id: city.id },
         data: {
           weatherData: current as unknown as Prisma.InputJsonValue,
           hourlyData: hourly as unknown as Prisma.InputJsonValue,
+          dailyData: daily as unknown as Prisma.InputJsonValue,
           lastFetched: new Date(),
         },
       });
