@@ -1,3 +1,4 @@
+"use client";
 import { CityWeatherData } from "@/types/weather";
 import { useState } from "react";
 
