@@ -1,5 +1,4 @@
 import Header  from "@/components/layout/Header";
-import SearchBar from "@/components/layout/SearchBar";
 import GridCard from "@/components/layout/GridCard";
 import { getAllCitiesWeather } from "@/lib/get-all-cities-weather";
 export const dynamic = "force-dynamic";
@@ -12,7 +11,6 @@ export default async function Home() {
     
       <div className="relative z-1 max-w-[1220px] my-0 mx-auto p-[40px_24px_80px]">
         <Header cities={cities}/>
-        <SearchBar />
         <div className="mt-8">
           <GridCard cities={cities} />
         </div>

@@ -2,6 +2,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { CityWeatherData } from "@/types/weather";
 import { useRouter } from "next/navigation";
+import SearchBar from "@/components/layout/SearchBar";
 
 const FAVORITES_KEY = "cebu-wx-favorites";
 
@@ -46,7 +47,7 @@ export default function GridCard({ cities }: { cities: CityWeatherData[] }) {
         } else {
             setShowSuggestions(false);
         }
-    }, [query]);
+    }, [query, cities]);
 
     const sorted = useMemo(() => {
         return [...filtered].sort((a, b) => {
@@ -67,6 +68,19 @@ export default function GridCard({ cities }: { cities: CityWeatherData[] }) {
 
     return(
         <div>
+            <div className="mb-8">
+                <SearchBar 
+                    value={query}
+                    onChange={setQuery}
+                    suggestions={suggestions}
+                    showSuggestions={showSuggestions}
+                    onFocus={() => setShowSuggestions(true)}
+                    onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+                    onSelect={(slug) => {
+                        router.push(`/city/${slug}`);
+                    }}
+                />
+            </div>
             {/* Pinned section */}
             {favs.length > 0 && !query && (
                 <div className="mb-10">
@@ -75,7 +89,7 @@ export default function GridCard({ cities }: { cities: CityWeatherData[] }) {
                     </div>
                     <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
                         {cities.filter((c) => favs.includes(c.slug)).map((city) => (
-                            <CityCard key={city.slug} city={city} isFav pinned onFavToggle={toggle} onClick={() => {}} />
+                            <CityCard key={city.slug} city={city} isFav pinned onFavToggle={toggle} onClick={() => router.push(`/city/{city.slug}`)} />
                         ))}
                     </div>
                 </div>

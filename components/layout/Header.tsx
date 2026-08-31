@@ -29,7 +29,7 @@ export default function Header({ cities }: { cities: CityWeatherData[] }) {
                     </div>
                 </div>
 
-                <div className="flex shrink-0 items-center gap-[10px] rounded-[14px] border border-red-500/30 bg-red-500/12 px-[18px] py-[12px]">
+                {/* <div className="flex shrink-0 items-center gap-[10px] rounded-[14px] border border-red-500/30 bg-red-500/12 px-[18px] py-[12px]">
                     <div>
                         <div className="text-[12px] font-semibold tracking-[0.06em] text-red-500">
                             ACTIVE ADVISORIES
@@ -38,7 +38,7 @@ export default function Header({ cities }: { cities: CityWeatherData[] }) {
                             11 areas affected
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );
