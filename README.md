@@ -45,8 +45,8 @@ The general flow is:
                                │ Fetch weather data
                                ▼
                     ┌─────────────────────┐
-                    │ Scheduled Refresh   │
-                    │     Process         │
+                    │  Scheduled Refresh  │
+                    │       Process       │
                     └──────────┬──────────┘
                                │
                                │ Store / Update
@@ -59,14 +59,14 @@ The general flow is:
                                │ Prisma
                                ▼
                     ┌─────────────────────┐
-                    │     Next.js         │
-                    │   Server / API      │
+                    │      Next.js        │
+                    │    Server / API     │
                     └──────────┬──────────┘
                                │
                                ▼
                     ┌─────────────────────┐
-                    │    React / Next.js  │
-                    │     Frontend        │
+                    │   React / Next.js   │
+                    │      Frontend       │
                     └─────────────────────┘
 ```
 
