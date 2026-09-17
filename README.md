@@ -37,22 +37,37 @@ When users access the website, the application can retrieve the stored weather i
 The general flow is:
 
 ```text
-OpenWeatherMap API
-        |
-        v
-Scheduled Weather Refresh
-        |
-        v
-PostgreSQL Database
-        |
-        v
-Prisma
-        |
-        v
-Next.js
-        |
-        v
-Frontend
+                    ┌─────────────────────┐
+                    │   OpenWeatherMap    │
+                    │        API          │
+                    └──────────┬──────────┘
+                               │
+                               │ Fetch weather data
+                               ▼
+                    ┌─────────────────────┐
+                    │ Scheduled Refresh   │
+                    │     Process         │
+                    └──────────┬──────────┘
+                               │
+                               │ Store / Update
+                               ▼
+                    ┌─────────────────────┐
+                    │     PostgreSQL      │
+                    │      Database       │
+                    └──────────┬──────────┘
+                               │
+                               │ Prisma
+                               ▼
+                    ┌─────────────────────┐
+                    │     Next.js        │
+                    │   Server / API     │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │    React / Next.js  │
+                    │     Frontend        │
+                    └─────────────────────┘
 ```
 
 The refresh process gets the current weather, hourly forecast, and daily forecast for the configured locations.
