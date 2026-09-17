@@ -59,8 +59,8 @@ The general flow is:
                                │ Prisma
                                ▼
                     ┌─────────────────────┐
-                    │     Next.js        │
-                    │   Server / API     │
+                    │     Next.js         │
+                    │   Server / API      │
                     └──────────┬──────────┘
                                │
                                ▼
