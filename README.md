@@ -1,124 +1,88 @@
-# Lantaw Cebu 🌤️
+# Lantaw Cebu
 
-A full-stack weather dashboard for **20 cities and municipalities in Cebu**, providing current weather conditions, hourly forecasts, and 7-day forecasts.
+Lantaw Cebu is a full-stack weather dashboard that displays weather information for 20 cities and municipalities in Cebu.
 
-The project was built as a personal portfolio project to strengthen my experience with **full-stack development, database management, API integration, and scheduled data processing**.
+This project was created as a personal project to practice full-stack web development and to learn more about working with APIs, databases, and scheduled data processing.
 
 ## Features
 
-* 🌡️ Current weather conditions
-* 🕐 Hourly weather forecast
-* 📅 7-day weather forecast
-* 📍 Weather information for 20 Cebu cities and municipalities
-* 🔄 Automated weather data refresh
-* 💾 PostgreSQL database for storing weather data
-* 🧩 Prisma ORM for database operations
-* 🌐 OpenWeatherMap API integration
-* 📱 Responsive user interface
+* Current weather information
+* Hourly weather forecast
+* 7-day weather forecast
+* Weather information for 20 Cebu cities and municipalities
+* Automated weather data updates
+* PostgreSQL database for storing weather data
+* OpenWeatherMap API integration
+* Responsive interface
 
-## Tech Stack
+## Technologies Used
 
-### Frontend
+* Next.js
+* React
+* TypeScript
+* Tailwind CSS
+* PostgreSQL
+* Prisma ORM
+* OpenWeatherMap API
+* Railway
 
-* **Next.js**
-* **React**
-* **TypeScript**
-* **Tailwind CSS**
+## How It Works
 
-### Backend / Server-Side
+The application uses the OpenWeatherMap API to get weather information.
 
-* **Next.js API Routes**
-* **TypeScript**
-* **Prisma ORM**
+Instead of requesting the weather API every time a user visits the website, the project uses a scheduled refresh process. The weather data is fetched periodically and saved to the PostgreSQL database.
 
-### Database
+When users access the website, the application can retrieve the stored weather information from the database.
 
-* **PostgreSQL**
-
-### External API
-
-* **OpenWeatherMap API**
-
-### Deployment
-
-* **Railway**
-
-## Architecture
-
-Instead of requesting weather data directly from OpenWeatherMap every time a user visits the website, Lantaw Cebu uses a scheduled data-refresh process.
+The general flow is:
 
 ```text
-                    ┌─────────────────────┐
-                    │   OpenWeatherMap    │
-                    │        API          │
-                    └──────────┬──────────┘
-                               │
-                               │ Fetch weather data
-                               ▼
-                    ┌─────────────────────┐
-                    │ Scheduled Refresh   │
-                    │     Process         │
-                    └──────────┬──────────┘
-                               │
-                               │ Store / Update
-                               ▼
-                    ┌─────────────────────┐
-                    │     PostgreSQL      │
-                    │      Database       │
-                    └──────────┬──────────┘
-                               │
-                               │ Prisma
-                               ▼
-                    ┌─────────────────────┐
-                    │     Next.js        │
-                    │   Server / API     │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │    React / Next.js  │
-                    │     Frontend        │
-                    └─────────────────────┘
+OpenWeatherMap API
+        |
+        v
+Scheduled Weather Refresh
+        |
+        v
+PostgreSQL Database
+        |
+        v
+Prisma
+        |
+        v
+Next.js
+        |
+        v
+Frontend
 ```
 
-The scheduled process fetches the weather information for the configured Cebu locations and stores the results in PostgreSQL. The application can then retrieve the stored data through the database instead of making an external API request for every page visit.
+The refresh process gets the current weather, hourly forecast, and daily forecast for the configured locations.
 
-## Why Scheduled Data Refresh?
+## Why I Used a Scheduled Refresh
 
-The project uses the free tier of the OpenWeatherMap API, which has API usage limitations.
+The OpenWeatherMap API has limitations on its free tier. To avoid making unnecessary API requests, I decided to periodically fetch the weather data and store it in the database.
 
-To reduce unnecessary API requests, weather information is periodically fetched and stored in the database. This allows the application to serve weather information from PostgreSQL while limiting the number of requests sent to the external API.
-
-The refresh process retrieves:
-
-* Current weather
-* Hourly forecast
-* Daily forecast
-
-The retrieved information is then associated with each city in the database.
+This allows the website to use the stored data instead of making an external API request every time someone visits the page.
 
 ## Database
 
-The application uses **PostgreSQL** as its database and **Prisma ORM** for database access.
+The project uses PostgreSQL as the database and Prisma ORM for database operations.
 
-Each city contains information such as:
+Each city stores information including:
 
 * City name
 * Coordinates
 * Current weather data
 * Hourly forecast data
 * Daily forecast data
-* Last weather-data refresh timestamp
+* Last fetched time
 
-Prisma provides the application with a structured way to query and update the database from the Next.js server-side code.
+## API
 
-## API Integration
+The project uses OpenWeatherMap as the external weather API.
 
-Lantaw Cebu uses the **OpenWeatherMap API** as its external weather data source.
+The weather data is retrieved using the latitude and longitude of each city or municipality and is then stored in PostgreSQL.
 
-The application retrieves weather information using the coordinates of each configured Cebu city or municipality.
-
-The data is processed and stored in PostgreSQL during the scheduled refresh process.
+The project also has a server-side API route that handles the weather refresh process.
 
 ## Project Structure
 
@@ -154,29 +118,29 @@ cebu-weather-website/
 
 ### Prerequisites
 
-Make sure you have the following installed:
+You will need:
 
-* [Node.js](https://nodejs.org/)
+* Node.js
 * npm
 * PostgreSQL
-* An OpenWeatherMap API key
+* OpenWeatherMap API key
 
-### 1. Clone the repository
+### Clone the Repository
 
 ```bash
 git clone https://github.com/pioloebarle/cebu-weather-website.git
 cd cebu-weather-website
 ```
 
-### 2. Install dependencies
+### Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Configure environment variables
+### Environment Variables
 
-Create a `.env` file in the root directory and provide the environment variables required by the application.
+Create a `.env` file in the root directory and add the required environment variables.
 
 ```env
 DATABASE_URL="your-postgresql-connection-string"
@@ -184,27 +148,21 @@ OPENWEATHER_API_KEY="your-openweathermap-api-key"
 CRON_SECRET="your-cron-secret"
 ```
 
-> Use the environment variable names expected by the current source code when configuring your deployment.
+Make sure to use the environment variable names required by the project.
 
-### 4. Generate Prisma Client
-
-```bash
-npx prisma generate
-```
-
-### 5. Set up the database
-
-Make sure your PostgreSQL database is available and apply the Prisma schema/migrations used by the project.
-
-### 6. Run the development server
+### Run the Development Server
 
 ```bash
 npm run dev
 ```
 
-Open http://localhost:3000 in your browser.
+The application will be available at:
 
-## Production Build
+```text
+http://localhost:3000
+```
+
+## Production
 
 To create a production build:
 
@@ -212,57 +170,48 @@ To create a production build:
 npm run build
 ```
 
-Then start the production server:
+To run the production server:
 
 ```bash
 npm start
 ```
 
-## Scheduled Weather Refresh
+## Weather Refresh
 
-The project includes a server-side API route for refreshing weather data:
+The project includes a server-side route for refreshing the weather data:
 
 ```text
 /api/cron/refresh-weather
 ```
 
-The endpoint is protected using a bearer token based on the configured cron secret.
-
 The refresh process:
 
-1. Retrieves the configured cities from PostgreSQL.
-2. Fetches current, hourly, and daily weather data from OpenWeatherMap.
-3. Updates each city's weather information using Prisma.
-4. Records the time when the data was last refreshed.
-5. Reports successful and failed city updates.
+1. Gets the list of cities from the database.
+2. Fetches the current, hourly, and daily weather data.
+3. Updates the weather information in PostgreSQL using Prisma.
+4. Saves the latest fetch time.
+5. Records any cities where the refresh failed.
 
-This allows the application to periodically update its stored weather data without requiring every visitor to trigger an external API request.
+The endpoint is also protected using a cron secret.
 
-## Project Goals
+## What I Learned
 
-Lantaw Cebu was developed to explore and practice:
+Through this project, I was able to practice:
 
-* Full-stack web development
-* Next.js server-side development
-* React and TypeScript
-* REST API integration
-* PostgreSQL database management
-* Prisma ORM
-* Scheduled background data processing
-* API usage optimization
-* Application deployment
+* Building a full-stack application with Next.js
+* Working with React and TypeScript
+* Using Prisma with PostgreSQL
+* Integrating an external API
+* Creating server-side API routes
+* Working with scheduled data updates
+* Managing data between an external API and a database
+* Deploying a web application using Railway
 
 ## Author
 
-**Piolo Pascual E. Besinga**
+Piolo Pascual E. Besinga
 
 Computer Engineering Graduate
 University of San Carlos
 
-GitHub: [@pioloebarle](https://github.com/pioloebarle)
-
----
-
-## License
-
-This project is intended primarily as a personal portfolio and learning project.
+GitHub: https://github.com/pioloebarle
