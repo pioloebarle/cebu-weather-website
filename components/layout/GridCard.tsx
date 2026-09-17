@@ -89,7 +89,7 @@ export default function GridCard({ cities }: { cities: CityWeatherData[] }) {
                     </div>
                     <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
                         {cities.filter((c) => favs.includes(c.slug)).map((city) => (
-                            <CityCard key={city.slug} city={city} isFav pinned onFavToggle={toggle} onClick={() => router.push(`/city/{city.slug}`)} />
+                            <CityCard key={city.slug} city={city} isFav pinned onFavToggle={toggle} onClick={() => router.push(`/city/${city.slug}`)} />
                         ))}
                     </div>
                 </div>
